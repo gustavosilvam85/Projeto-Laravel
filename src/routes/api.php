@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/exploradores', [ExploradorController::class, 'index']);
+Route::delete('/exploradores/{id}',[ExploradorController::class,'delete']);
+
+
