@@ -3,57 +3,58 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Explorador;
 
 class ExploradorController extends Controller
 {
     public function index(Explorador $explorador){
         $explorador = $explorador->all();
-        return responde()->json (['Explorador' => $explorador]);
+        return response()->json (['Explorador' => $explorador]);
     }
 
-    public function show(string|int $id){ 
-        $explorador = Explorador::findOrFail($id); //tenta achar o explorador com o id do explorador
-        return responde()->json (['Explorador' => $explorador]);//Se achar retorna um json com os dados do explorador
+    public function showInventario(string|int $id){ 
+        $explorador = Explorador::with('Inventario')->findOrFail($id); //tenta achar o explorador com o id do explorador
+        return response()->json (['Explorador' => $explorador,]);//Se achar retorna um json com os dados do explorador
     }
     
     public function create(Request $request){
         $validatedData = $request->validate([
             'Nome' => 'required|string|max:255',
-            'Idade' => 'required|Integer|min:0',
-            'Latitude'=> 'required|decimal|min:0',
-            'Longetude'=> 'required|decimal|min:0',
+            'Idade' => 'required|integer|min:0',
+            'Latitude' => 'required|string',
+            'Longitude' => 'required|string',
         ]);
-
+    
         $explorador = Explorador::create([
             'Nome' => $validatedData['Nome'],
             'Idade' => $validatedData['Idade'],
             'Latitude' => $validatedData['Latitude'],
-            'Longetude' => $validatedData['Longetude'],
+            'Longitude' => $validatedData['Longitude'],
         ]);
+        return response()->json(['Explorador' => $explorador], 201);
     }
+    
 
     public function update(Request $request,$id){
         $validatedData = $request->validate([
-            'Nome' => 'sometimes|string|max:255',
-            'Idade' => 'sometimes|Integer|min:0',
-            'Latitude'=> 'sometimes|decimal|min:0',
-            'Longetude'=> 'sometimes|decimal|min:0',
+            'Latitude'=> 'sometimes|string',
+            'Longitude'=> 'sometimes|string',
         ]);
 
         $explorador = Explorador::findOrFail($id);
 
         $explorador->update([
-            'Nome' => $validatedData['Nome'],
-            'Idade' => $validatedData['Idade'],
             'Latitude' => $validatedData['Latitude'],
-            'Longetude' => $validatedData['Longetude'],
+            'Longitude' => $validatedData['Longitude'], 
         ]);
-
         $explorador->save();
+
+        return response()->json(['Explorador' => $explorador], 201);
     }
 
     public function delete(string|int $id){
         $explorador = Explorador::findOrFail($id);
         $explorador->delete();
+        return response()->json("Deletado com sucesso");
     }
 }

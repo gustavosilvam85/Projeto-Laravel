@@ -5,20 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Inventario extends Model
+class Itens extends Model
 {
     use HasFactory;
 
+    protected $table="itens";
+
     protected $fillable = [
         'id_explorador',
-        'Nome',
+        'NomeItem',
         'Valor',
         'Latitude',
-        'Longetude',
+        'Longitude'
     ];
-    
-    public function explorador(){
-        return $this->belongsTo(Explorador::class);
-    }
 }
-

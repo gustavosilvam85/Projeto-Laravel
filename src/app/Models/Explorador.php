@@ -9,10 +9,17 @@ class Explorador extends Model
 {
     use HasFactory;
 
+    protected $table="explorador";
+
     protected $fillable = [
+        'id_explorador',
         'Nome',
         'Idade',
         'Latitude',
-        'Longetude'
+        'Longitude'
     ];
+
+    public function inventario(){
+        return $this->hasMany(Itens::class,'id_explorador');
+    }
 }

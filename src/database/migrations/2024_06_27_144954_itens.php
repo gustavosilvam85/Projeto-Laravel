@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventario', function (Blueprint $table) {
+        Schema::create('itens', function (Blueprint $table) {
             $table->id();
+            
             $table->unsignedBigInteger('id_explorador');
             $table->foreign('id_explorador')->references('id')->on('explorador');
-            $table->string('Nome');
+            
+            $table->string('NomeItem');
             $table->integer('Valor');
-            $table->decimal('Latitude');
-            $table->decimal('Longetude');
+            $table->string('Latitude');
+            $table->string('Longitude');
             $table->timestamps();
         });
     }

@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExploradorController;
+use App\Http\Controllers\ItensController;
+use App\Models\Explorador;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/exploradores', [ExploradorController::class, 'index']);
-Route::delete('/exploradores/{id}',[ExploradorController::class,'delete']);
+Route::get('/exploradores', [ExploradorController::class,'index']);
+Route::post('/explorador',[ExploradorController::class,'create']);
+Route::put('/explorador/{id}',[ExploradorController::class,'update']);
+Route::delete('/explorador/{id}',[ExploradorController::class,'delete']);
 
+Route::get('/exploradores/{id}', [ExploradorController::class, 'showInventario']); 
 
+Route::post('/exploradores/{id}/inventario',[ItensController::class,'create']);
+
+Route::put('/inventario/{id}',[ItensController::class,'update']);
