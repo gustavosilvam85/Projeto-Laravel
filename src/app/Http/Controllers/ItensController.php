@@ -64,4 +64,35 @@ class ItensController extends Controller
         $itens->delete();
     }   
 
+    public function tradeItens(Request $request){
+        // Validação da requisição
+        $data = $request->validate([
+            'itens_explorador_origem' => 'required|array',
+            'itens_explorador_destino' => 'required|array',
+            'id_explorador_origem' => 'required|integer|exists:explorador,id',
+            'id_explorador_destino' => 'required|integer|exists:explorador,id',
+        ]);
+
+        $itensOrigem = $data['itens_explorador_origem'];
+        $itensDestino = $data['itens_explorador_destino'];
+
+        $exploradorOrigem = Explorador::find($data['id_explorador_origem']);
+        $exploradorDestino = Explorador::find($data['id_explorador_destino']);
+
+        // Calcular o valor total dos itens
+        $valorOrigem = Itens::whereIn('id', $itensOrigem)->sum('valor');
+        $valorDestino = Itens::whereIn('id', $itensDestino)->sum('valor');
+
+        // Verificar se os valores são equivalentes
+        if ($valorOrigem !== $valorDestino) {
+            return response()->json(['error' => 'Valores dos itens não são equivalentes'], 400);
+        }
+
+        // Realizar a troca
+        Itens::whereIn('id', $itensOrigem)->update(['id_explorador' => $exploradorDestino->id]);
+        Itens::whereIn('id', $itensDestino)->update(['id_explorador' => $exploradorOrigem->id]);
+
+        return response()->json(['success' => 'Itens trocados com sucesso']);
+        
+    }
 }

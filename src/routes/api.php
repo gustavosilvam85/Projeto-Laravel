@@ -21,9 +21,8 @@ Route::get('/exploradores', [ExploradorController::class,'index']);
 Route::post('/explorador',[ExploradorController::class,'create']);
 Route::put('/explorador/{id}',[ExploradorController::class,'update']);
 Route::delete('/explorador/{id}',[ExploradorController::class,'delete']);
-
 Route::get('/exploradores/{id}', [ExploradorController::class, 'showInventario']); 
 
 Route::post('/exploradores/{id}/inventario',[ItensController::class,'create']);
-
 Route::put('/inventario/{id}',[ItensController::class,'update']);
+Route::post('/exploradores/trocar',[ItensController::class,'tradeItens']);
